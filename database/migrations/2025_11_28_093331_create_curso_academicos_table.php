@@ -8,13 +8,14 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
-        Schema::create('productos', function (Blueprint $table) {
+        Schema::create('curso_academicos', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->mediumText('descripcion');
-            $table->decimal('precio',10,2);
+            $table->string('nombre', 100);
+            $table->date('fecha_inicio');
+            $table->date('fecha_fin');
+            $table->boolean('activo')->default(true);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('productos');
+        Schema::dropIfExists('curso_academicos');
     }
 };

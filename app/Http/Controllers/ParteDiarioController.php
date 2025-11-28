@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ImagenProducto;
+use App\Models\ParteDiario;
 use Illuminate\Http\Request;
 
-class ImagenProductoController extends Controller
+class ParteDiarioController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class ImagenProductoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ImagenProducto $imagenProducto)
+    public function show(ParteDiario $parteDiario)
     {
         //
     }
@@ -42,7 +42,7 @@ class ImagenProductoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ImagenProducto $imagenProducto)
+    public function edit(ParteDiario $parteDiario)
     {
         //
     }
@@ -50,7 +50,7 @@ class ImagenProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ImagenProducto $imagenProducto)
+    public function update(Request $request, ParteDiario $parteDiario)
     {
         //
     }
@@ -58,7 +58,7 @@ class ImagenProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ImagenProducto $imagenProducto)
+    public function destroy(ParteDiario $parteDiario)
     {
         //
     }
