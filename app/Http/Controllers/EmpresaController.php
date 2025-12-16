@@ -7,59 +7,63 @@ use Illuminate\Http\Request;
 
 class EmpresaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $empresas = Empresa::query()
+            ->when($request->boolean('only_active'), fn ($q) => $q->where('activo', true))
+            ->orderByDesc('id')
+            ->paginate($request->integer('per_page', 15));
+
+        return response()->json($empresas);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nombre' => ['required', 'string', 'max:200'],
+            'cif' => ['required', 'string', 'max:20', 'unique:empresas,cif'],
+            'direccion' => ['required', 'string', 'max:255'],
+            'telefono' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'email', 'max:100'],
+            'sector' => ['required', 'string', 'max:100'],
+            'tutor_empresa' => ['required', 'string', 'max:200'],
+            'email_tutor' => ['required', 'email', 'max:100'],
+            'activo' => ['boolean'],
+        ]);
+
+        $empresa = Empresa::create($validated);
+
+        return response()->json($empresa, 201);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Empresa $empresa)
     {
-        //
+        return response()->json($empresa);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Empresa $empresa)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Empresa $empresa)
     {
-        //
+        $validated = $request->validate([
+            'nombre' => ['sometimes', 'string', 'max:200'],
+            'cif' => ['sometimes', 'string', 'max:20', 'unique:empresas,cif,' . $empresa->id],
+            'direccion' => ['sometimes', 'string', 'max:255'],
+            'telefono' => ['sometimes', 'string', 'max:20'],
+            'email' => ['sometimes', 'email', 'max:100'],
+            'sector' => ['sometimes', 'string', 'max:100'],
+            'tutor_empresa' => ['sometimes', 'string', 'max:200'],
+            'email_tutor' => ['sometimes', 'email', 'max:100'],
+            'activo' => ['sometimes', 'boolean'],
+        ]);
+
+        $empresa->update($validated);
+
+        return response()->json($empresa);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Empresa $empresa)
     {
-        //
+        $empresa->delete();
+
+        return response()->noContent();
     }
 }
