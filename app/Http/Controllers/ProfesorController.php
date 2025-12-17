@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profesor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ProfesorController extends Controller
 {
@@ -20,6 +21,7 @@ class ProfesorController extends Controller
 
     public function store(Request $request)
     {
+
         $validated = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'dni' => ['required', 'string', 'max:20', 'unique:profesors,dni'],
@@ -28,7 +30,7 @@ class ProfesorController extends Controller
             'telefono' => ['required', 'string', 'max:20'],
             'activo' => ['boolean'],
         ]);
-
+        
         $profesor = Profesor::create($validated);
 
         return response()->json($profesor, 201);

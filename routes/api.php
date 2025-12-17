@@ -15,12 +15,14 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::apiResource('profesores', ProfesorController::class);
+Route::apiResource('secuencias', SecuenciaController::class);
+Route::apiResource('empresas', EmpresaController::class);
+Route::apiResource('cursos-academicos', CursoAcademicoController::class);
+Route::apiResource('seguimientos', SeguimientoPracticaController::class);
+Route::apiResource('partes-diarios', ParteDiarioController::class);
+Route::apiResource('valoraciones', ValoracionController::class);
+
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('secuencias', SecuenciaController::class);
-    Route::apiResource('empresas', EmpresaController::class);
-    Route::apiResource('profesores', ProfesorController::class);
-    Route::apiResource('cursos-academicos', CursoAcademicoController::class);
-    Route::apiResource('seguimientos', SeguimientoPracticaController::class);
-    Route::apiResource('partes-diarios', ParteDiarioController::class);
-    Route::apiResource('valoraciones', ValoracionController::class);
+
 });
