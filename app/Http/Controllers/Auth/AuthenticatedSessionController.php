@@ -21,7 +21,7 @@ class AuthenticatedSessionController extends Controller
         ]);
 
         if (! Auth::attempt($credentials)) {
-            return response(['message' => 'Invalid credentials'], 422);
+            return response(['message' => 'Credenciales no válidas'], 422);
         }
 
         $token = $request->user()->createToken('api')->plainTextToken;
