@@ -24,12 +24,14 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'role' => ['sometimes', 'in:admin,alumno,profesor,empresa'],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->string('password')),
+            'role' => $request->role ?? 'alumno',
         ]);
 
         event(new Registered($user));
@@ -40,6 +42,7 @@ class RegisteredUserController extends Controller
         return response([
             'token' => $token,
             'user'  => $user,
+            'role'  => $user->role,
         ], 201);
     }
 }

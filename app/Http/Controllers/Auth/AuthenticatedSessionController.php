@@ -24,10 +24,19 @@ class AuthenticatedSessionController extends Controller
             return response(['message' => 'Credenciales no válidas'], 422);
         }
 
-        $token = $request->user()->createToken('api')->plainTextToken;
+        $user = $request->user();
+        $token = $user->createToken('api')->plainTextToken;
+        
+        // Incluir datos de profesor si el usuario es profesor
+        $userData = $user->toArray();
+        if ($user->isProfesor() && $user->profesor) {
+            $userData['profesor_id'] = $user->profesor->id;
+        }
+        
         return response([
             'token' => $token,
-            'user'  => $request->user(),
+            'user'  => $userData,
+            'role'  => $user->role,
         ], 200);
     }
 

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -45,5 +46,36 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Métodos helper para verificar roles
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isAlumno(): bool
+    {
+        return $this->role === 'alumno';
+    }
+
+    public function isProfesor(): bool
+    {
+        return $this->role === 'profesor';
+    }
+
+    public function isEmpresa(): bool
+    {
+        return $this->role === 'empresa';
+    }
+
+    /**
+     * Relación con profesor
+     */
+    public function profesor()
+    {
+        return $this->hasOne(Profesor::class);
     }
 }
