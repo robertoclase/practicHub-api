@@ -42,7 +42,7 @@ class SeguimientoPracticaController extends Controller
 
     public function show(SeguimientoPractica $seguimientoPractica)
     {
-        return response()->json($seguimientoPractica->load(['empresa', 'profesor', 'cursoAcademico', 'alumno', 'partesDiarios', 'valoraciones']));
+        return response()->json($seguimientoPractica->load(['empresa', 'profesor.user', 'cursoAcademico', 'alumno', 'partesDiarios', 'valoraciones']));
     }
 
     public function update(Request $request, SeguimientoPractica $seguimientoPractica)

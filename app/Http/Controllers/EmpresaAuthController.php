@@ -27,9 +27,17 @@ class EmpresaAuthController extends Controller
 
         $empresa = Empresa::where('email', $request->email)->first();
 
-        if (!$empresa || !Hash::check($request->password, $empresa->password)) {
+        if (!$empresa) {
             return response()->json([
-                'message' => 'Credenciales no válidas'
+                'message' => 'No existe ninguna empresa registrada con ese correo electrónico.',
+                'field'   => 'email',
+            ], 422);
+        }
+
+        if (!Hash::check($request->password, $empresa->password)) {
+            return response()->json([
+                'message' => 'La contraseña introducida es incorrecta.',
+                'field'   => 'password',
             ], 422);
         }
 
@@ -56,6 +64,7 @@ class EmpresaAuthController extends Controller
         $empresa = $request->user(); // La empresa autenticada
 
         $seguimientos = SeguimientoPractica::with([
+            'empresa',
             'alumno:id,name,email',
             'profesor.user:id,name,email',
             'cursoAcademico',

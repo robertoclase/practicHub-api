@@ -94,4 +94,36 @@ class AlumnoController extends Controller
 
         return response()->json($valoraciones);
     }
+
+    /**
+     * Crea un nuevo parte diario (el alumno solo puede crear partes de sus propios seguimientos)
+     */
+    public function crearParte(Request $request)
+    {
+        $request->validate([
+            'seguimiento_practica_id' => ['required', 'integer'],
+            'fecha'                   => ['required', 'date'],
+            'horas_realizadas'        => ['required', 'integer', 'min:1', 'max:12'],
+            'actividades_realizadas'  => ['required', 'string', 'min:10'],
+            'dificultades'            => ['nullable', 'string'],
+            'observaciones'           => ['nullable', 'string'],
+        ]);
+
+        // Verificar que el seguimiento pertenece al alumno autenticado
+        $seguimiento = SeguimientoPractica::where('user_id', $request->user()->id)
+            ->findOrFail($request->seguimiento_practica_id);
+
+        $parte = ParteDiario::create([
+            'seguimiento_practica_id' => $seguimiento->id,
+            'fecha'                   => $request->fecha,
+            'horas_realizadas'        => $request->horas_realizadas,
+            'actividades_realizadas'  => $request->actividades_realizadas,
+            'dificultades'            => $request->dificultades,
+            'observaciones'           => $request->observaciones,
+            'validado_profesor'       => false,
+            'validado_tutor'          => false,
+        ]);
+
+        return response()->json($parte, 201);
+    }
 }

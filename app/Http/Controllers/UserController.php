@@ -11,6 +11,7 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $users = User::query()
+            ->where('role', 'alumno')
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->input('search');
                 $query->where(function ($q) use ($search) {
@@ -33,6 +34,7 @@ class UserController extends Controller
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
+        $validated['role'] = 'alumno';
 
         $user = User::create($validated);
 

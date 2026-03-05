@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\ProfesorAuthController;
 use App\Http\Controllers\EmpresaAuthController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,7 @@ Route::get('/empresas/listado', [EmpresaController::class, 'index']);
 
 // Rutas protegidas generales (admin)
 Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('dashboard/stats', [DashboardController::class, 'stats']);
     Route::apiResource('profesores', ProfesorController::class);
     Route::apiResource('secuencias', SecuenciaController::class);
     Route::apiResource('empresas', EmpresaController::class);
@@ -50,6 +52,7 @@ Route::middleware(['auth:sanctum'])->prefix('alumno')->group(function () {
     Route::get('/mis-practicas', [AlumnoController::class, 'misPracticas']);
     Route::get('/mis-practicas/{id}', [AlumnoController::class, 'detallePractica']);
     Route::get('/mis-partes', [AlumnoController::class, 'misPartesDiarios']);
+    Route::post('/mis-partes', [AlumnoController::class, 'crearParte']);
     Route::get('/practicas/{id}/partes', [AlumnoController::class, 'partesPorPractica']);
     Route::get('/mis-valoraciones', [AlumnoController::class, 'misValoraciones']);
 });
