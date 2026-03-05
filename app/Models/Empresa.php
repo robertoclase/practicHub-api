@@ -11,8 +11,8 @@ class Empresa extends Authenticatable
     use HasApiTokens;
 
     protected $fillable = [
-        'nombre', 'cif', 'direccion', 'telefono', 'email',
-        'sector', 'tutor_empresa', 'email_tutor', 'activo', 'password', 'foto_perfil'
+        'nombre', 'cif', 'direccion', 'telefono', 'email', 
+        'sector', 'tutor_empresa', 'email_tutor', 'activo', 'password'
     ];
 
     protected $hidden = [

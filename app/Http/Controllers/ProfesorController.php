@@ -16,16 +16,6 @@ class ProfesorController extends Controller
         $profesores = Profesor::query()
             ->with('user')
             ->when($request->boolean('only_active'), fn ($q) => $q->where('activo', true))
-            ->when($request->filled('search'), function ($q) use ($request) {
-                $term = '%' . $request->input('search') . '%';
-                $q->where(function ($q) use ($term) {
-                    $q->where('dni', 'like', $term)
-                      ->orWhere('departamento', 'like', $term)
-                      ->orWhere('especialidad', 'like', $term)
-                      ->orWhereHas('user', fn ($u) => $u->where('name', 'like', $term)
-                          ->orWhere('email', 'like', $term));
-                });
-            })
             ->orderByDesc('id')
             ->paginate($request->integer('per_page', 15));
 
